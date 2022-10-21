@@ -1,0 +1,7 @@
+.forms-auth > * {
+  display: none;
+}
+
+.forms-auth > .active {
+  display: block;
+}

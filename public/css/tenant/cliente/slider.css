@@ -1,0 +1,31 @@
+#container-slider{
+    padding: 0px;
+}
+
+#slider1 {
+    height: 350px;
+}
+
+#slider2 {
+    height: 350px;
+}
+
+#slider3 {
+    height: 350px;
+}
+
+
+@media screen and (max-width:800px){
+    #slider1 {
+        height: 280px;
+    }
+
+    #slider2 {
+        height: 280px;
+    }
+
+    #slider3 {
+        height: 280px;
+    }
+
+}
