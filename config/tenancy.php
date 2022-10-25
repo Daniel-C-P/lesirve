@@ -18,7 +18,6 @@ return [
      */
     'central_domains' => [
         'lesirve.com',
-        '16.55.167.72.host.secureserver.net'
     ],
 
     /**
