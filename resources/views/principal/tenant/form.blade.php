@@ -11,6 +11,11 @@
             {{ Form::select('id_cliente', $clientes, null, ['class' => 'form-control select2' . ($errors->has('id_cliente') ? ' is-invalid' : ''), 'placeholder' => 'Seleccione un cliente']) }}
             {!! $errors->first('id_cliente', '<div class="invalid-feedback">:message</div>') !!}
         </div>
+        <div class="form-group">
+            {{ Form::label('Dominio') }}
+            {{ Form::text('domain', isset($tenant->domains->first()->domain) ? $tenant->domains->first()->domain : "", ['class' => 'form-control' . ($errors->has('domain') ? ' is-invalid' : ''), 'placeholder' => 'Dominio']) }}
+            {!! $errors->first('domain', '<div class="invalid-feedback">:message</div>') !!}
+        </div>
 
     </div>
     <div class="box-footer mt20">
