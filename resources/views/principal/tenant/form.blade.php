@@ -13,7 +13,7 @@
         </div>
         <div class="form-group">
             {{ Form::label('Dominio') }}
-            {{ Form::text('domain', $tenant->domains->first()->domain, ['class' => 'form-control' . ($errors->has('domain') ? ' is-invalid' : ''), 'placeholder' => 'Dominio']) }}
+            {{ Form::text('domain', isset($tenant->domains->first()->domain) ? $tenant->domains->first()->domain : "", ['class' => 'form-control' . ($errors->has('domain') ? ' is-invalid' : ''), 'placeholder' => 'Dominio']) }}
             {!! $errors->first('domain', '<div class="invalid-feedback">:message</div>') !!}
         </div>
 
