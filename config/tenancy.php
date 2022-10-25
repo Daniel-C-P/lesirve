@@ -17,7 +17,8 @@ return [
      * Only relevant if you're using the domain or subdomain identification middleware.
      */
     'central_domains' => [
-        'lesirve.co',
+        'lesirve.com',
+        '16.55.167.72.host.secureserver.net'
     ],
 
     /**
