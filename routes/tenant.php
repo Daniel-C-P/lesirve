@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
-use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
+use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use App\Http\Controllers\Tenant\ConfiguracioneController;
 use App\Http\Controllers\Tenant\CuponeController;
@@ -33,7 +33,7 @@ use App\Http\Controllers\Tenant\VentasProductoController;
 
 Route::middleware([
   'web',
-  InitializeTenancyByDomain::class,
+  InitializeTenancyByDomainOrSubdomain::class,
   PreventAccessFromCentralDomains::class,
 ])->group(function () {
   Route::get('/', [HomeTenantController::class, 'index'])->name('tenant.cliente.home');

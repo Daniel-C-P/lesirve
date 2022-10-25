@@ -61,18 +61,18 @@ class TenantController extends Controller
 
     $request->validate([
       'id' => ['required', 'unique:tenants'],
-      'id_cliente' => ['required']
+      'id_cliente' => ['required'],
+      'domain' => ['required', 'string', 'max:255']
     ]);
     $id = $request->id;
     $cliente = $request->id_cliente;
     $infoCliente = CentralUser::findOrFail($cliente);
-    $dominio = $_SERVER['SERVER_NAME'];
-    $dominio = $dominio == "127.0.0.1" ? "localhost" : $dominio;
+    
     $tenant = Tenant::create([
       'id' => $id
     ]);
     $tenant->domains()->create([
-      'domain' => "$id.$dominio",
+      'domain' => $request->domain,
       'cliente_id' => $cliente
     ]);
     $rutas = [
@@ -219,9 +219,9 @@ class TenantController extends Controller
    */
   public function edit($id)
   {
-    $tenant = Tenant::find($id);
+    $tenant = Tenant::with('domains')->find($id);
     $clientes = CentralUser::pluck('nombre', 'id');
-
+    
     return view('principal.tenant.edit', compact('tenant', 'clientes'));
   }
 
@@ -232,11 +232,16 @@ class TenantController extends Controller
    * @param  Tenant $tenant
    * @return \Illuminate\Http\Response
    */
-  public function update(Request $request, Tenant $tenant)
+  public function update(Request $request, $id)
   {
     //request()->validate(Tenant::$rules);
+    $tenant = Tenant::with('domains')->findOrFail($id);
 
-    $tenant->update($request->all());
+    // $tenant->update();
+    
+    $tenant->domains->first()->update([
+      'domain' => $request->domain
+    ]);
 
     return redirect()->route('tiendas.index')
       ->with('success', 'Tenant updated successfully');
