@@ -52,7 +52,7 @@
 
                                             <td>
                                                 <form action="{{ route('tiendas.destroy',$tenant->tenant_id) }}" method="POST" class="form-delete">
-                                                    <a class="btn btn-sm btn-primary" target="_blank" href="https://{{ str_contains($tenant->domain, '.') ? $tenant->domain : $tenant->domain.'.'.env('PRINCIPAL_DOMAIN')   }}"><i class="fa fa-fw fa-eye"></i> Visitar</a>
+                                                    <a class="btn btn-sm btn-primary" target="_blank" href="http://{{ str_contains($tenant->domain, '.') ? $tenant->domain : $tenant->domain.'.'.env('PRINCIPAL_DOMAIN')   }}"><i class="fa fa-fw fa-eye"></i> Visitar</a>
                                                     <a class="btn btn-sm btn-success" href="{{ route('tiendas.edit',$tenant->tenant_id) }}"><i class="fa fa-fw fa-edit"></i> Editar</a>
                                                     @csrf
                                                     @method('DELETE')
