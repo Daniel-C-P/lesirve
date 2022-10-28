@@ -241,7 +241,9 @@ class TenantController extends Controller
     $doamin = $tenant->domains->first();
     $cliente = $doamin->cliente_id;
     
-    $tenant->domains->delete();
+    foreach($tenant->domains as $item){
+      $item->delete();
+    }
     
     if($this->validateDomainName($request->domain)){
         
