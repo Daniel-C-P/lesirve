@@ -238,10 +238,31 @@ class TenantController extends Controller
     $tenant = Tenant::with('domains')->findOrFail($id);
 
     // $tenant->update();
+    $doamin = $tenant->domains->first();
+    $cliente = $doamin->cliente_id;
     
-    $tenant->domains->first()->update([
-      'domain' => $request->domain
-    ]);
+    $tenant->domains->delete();
+    
+    if($this->validateDomainName($request->domain)){
+        
+        $tenant->domains()->create([
+          'domain' => $request->domain,
+          'cliente_id' => $cliente
+        ]);
+
+        $tenant->domains()->create([
+          'domain' => 'www.'.$request->domain,
+          'cliente_id' => $cliente
+        ]);
+    } else {
+      
+      $tenant->domains()->create([
+        'domain' => $request->domain,
+        'cliente_id' => $cliente
+      ]);
+    
+    }
+    
 
     return back()
       ->with('success', 'Tenant updated successfully');
@@ -261,5 +282,12 @@ class TenantController extends Controller
 
     return redirect('tiendas')
       ->with('success', 'Tenant deleted successfully');
+  }
+
+  private function validateDomainName($domain) {
+
+    $pattern = '/^(http[s]?\:\/\/)?(?!\-)(?:[a-zA-Z\d\-]{0,62}[a-zA-Z\d]\.){1,126}(?!\d+)[a-zA-Z\d]{1,63}$/';
+    return !!preg_match($pattern, $domain);
+  
   }
 }
