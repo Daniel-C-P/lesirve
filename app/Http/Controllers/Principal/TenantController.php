@@ -243,7 +243,7 @@ class TenantController extends Controller
       'domain' => $request->domain
     ]);
 
-    return redirect()->route('principal.tenant.index')
+    return back()
       ->with('success', 'Tenant updated successfully');
   }
 
@@ -259,7 +259,7 @@ class TenantController extends Controller
     $tenant->delete();
     system("rm -rf ./tenants/$id");
 
-    return redirect()->route('principal.tenant.index')
+    return redirect('tiendas')
       ->with('success', 'Tenant deleted successfully');
   }
 }
