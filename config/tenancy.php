@@ -18,6 +18,7 @@ return [
      */
     'central_domains' => [
         'lesirve.com',
+        'www.lesirve.com',
     ],
 
     /**
