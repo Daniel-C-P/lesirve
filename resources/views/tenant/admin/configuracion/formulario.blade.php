@@ -21,6 +21,12 @@
     <label for="colorS">Color secundario:</label>
     <input type="color" class="form-control" value="{{ $configuracion->color_s }}" name="color_s" id="colorS">
   </div>
+
+  <div class="form-group">
+    {{ Form::label('Dominio') }}
+    {{ Form::text('domain', isset($domain->domain) ? $domain->domain : "", ['class' => 'form-control' . ($errors->has('domain') ? ' is-invalid' : ''), 'placeholder' => 'Dominio']) }}
+    {!! $errors->first('domain', '<div class="invalid-feedback">:message</div>') !!}
+</div>
   <!-- File para el logo de la plantilla -->
   <div class="form-group" style="width: 25%;">
     <label for="input-logo">Edita tu logo:</label>

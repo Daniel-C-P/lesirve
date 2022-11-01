@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Tenant;
 
 use App\Http\Controllers\Controller;
+use App\Models\Principal\Domain;
 use App\Models\Tenant\Cliente;
 use App\Models\Tenant\Configuracione;
 use App\Models\Tenant\Banners;
 use App\Models\Tenant\Producto;
 use Illuminate\Http\Request;
 use App\Traits\Template;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 
 /**
  * Class ConfiguracioneController
@@ -47,8 +50,12 @@ class ConfiguracioneController extends Controller
       ],
     ];
 
-    $total_imagenes = count(glob('img/plantillas/{*.jpg}', GLOB_BRACE));
-    return view('tenant.admin.configuracion.index', compact('configuracion', 'total_imagenes', 'listaPlantillas', 'banners'));
+    $total_imagenes = 50;//count(glob('img/plantillas/{*.jpg}', GLOB_BRACE));
+    
+    $tenant = tenancy();
+    $domain = $tenant->tenant->load('domains')->domains->first();
+
+    return view('tenant.admin.configuracion.index', compact('configuracion', 'total_imagenes', 'listaPlantillas', 'banners', 'domain'));
   }
 
   //Creamos una configuracion con los valores del tenant
@@ -66,7 +73,54 @@ class ConfiguracioneController extends Controller
   public function update(Request $request, Configuracione $conf)
   {
 
-    $data = request()->except(['_token', '_method']);
+    $data = request()->except(['_token', '_method', 'domain']);
+    
+    if($request->domain){
+
+      try{
+        DB::beginTransaction();
+        
+        $tenant = tenancy();
+        $tenant = $tenant->tenant->load('domains');
+
+        $client = $tenant->domains->first()->cliente_id;
+        
+        foreach($tenant->domains as $item){
+          $item->delete();
+        }
+        
+        
+        if($this->validateDomainName($request->domain)){
+            
+            $tenant->domains()->create([
+              'domain' => $request->domain,
+              'cliente_id' => $client
+            ]);
+
+            $tenant->domains()->create([
+              'domain' => 'www.'.$request->domain,
+              'cliente_id' => $client
+            ]);
+
+        } else {
+          
+          $tenant->domains()->create([
+            'domain' => $request->domain,
+            'cliente_id' => $client
+          ]);
+        
+        }
+
+        DB::commit();
+
+      } catch(\Throwable $e){
+        DB::rollBack();
+
+      }
+      
+    
+    }
+
     if(isset($data['imagen_banner_1'])){
       $data['imagen_banner_1'] = ConfiguracioneController::moveImage($request, $this->traerNombre(), 'imagen_banner_1');
     }
@@ -139,9 +193,22 @@ class ConfiguracioneController extends Controller
     $conf->query()->update($data);
   }
 
+  
+    if($request->domain) {
+      $domain = $this->validateDomainName($request->domain) ? $request->domain : $request->domain.'.'.env('PRINCIPAL_DOMAIN');
+      return Redirect::to('http://'.$domain.'/admin/configuracion');
 
+    }
 
     return redirect()->route('tenant.admin.configuracion')
-      ->with('success', 'Se actualizó correctamente la configuración');
+        ->with('success', 'Se actualizó correctamente la configuración');
+
+  }
+
+  private function validateDomainName($domain) {
+
+    $pattern = '/^(http[s]?\:\/\/)?(?!\-)(?:[a-zA-Z\d\-]{0,62}[a-zA-Z\d]\.){1,126}(?!\d+)[a-zA-Z\d]{1,63}$/';
+    return !!preg_match($pattern, $domain);
+  
   }
 }
