@@ -280,3 +280,7 @@
 [Fri Oct 21 20:23:26.247890 2022] [core:error] [pid 20455] [client 104.156.155.28:6469] AH00126: Invalid URI in request GET default.asp HTTP/1.1
 [Sat Oct 22 11:58:11.563249 2022] [core:error] [pid 11056] [client 152.89.196.211:54062] AH00126: Invalid URI in request POST /cgi-bin/.%2e/.%2e/.%2e/.%2e/bin/sh HTTP/1.1
 [Mon Oct 24 10:20:03.746009 2022] [core:error] [pid 14519] [client 152.89.196.211:53674] AH00126: Invalid URI in request POST /cgi-bin/.%2e/.%2e/.%2e/.%2e/bin/sh HTTP/1.1
+[Tue Oct 25 19:42:00.334711 2022] [autoindex:error] [pid 7363] [client 20.249.77.238:59144] AH01276: Cannot serve directory /var/www/lesirve.co/public/images/: No matching DirectoryIndex (index.html,index.php) found, and server-generated directory index forbidden by Options directive
+[Tue Oct 25 19:42:02.638012 2022] [autoindex:error] [pid 26802] [client 20.249.77.238:54607] AH01276: Cannot serve directory /var/www/lesirve.co/public/img/: No matching DirectoryIndex (index.html,index.php) found, and server-generated directory index forbidden by Options directive
+[Wed Oct 26 14:26:43.505807 2022] [cgi:error] [pid 27579] [client 92.118.39.30:45978] attempt to invoke directory as script: /var/www/cgi-bin/
+[Thu Oct 27 09:27:23.306792 2022] [core:error] [pid 14577] [client 92.118.39.30:41660] AH00126: Invalid URI in request GET /../../mnt/mtd/Config/Account1 HTTP/1.1
